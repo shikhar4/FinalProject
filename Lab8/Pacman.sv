@@ -1,5 +1,5 @@
 module Pacman(input Clk, Reset, frame_clk,
-				  input [7:0] keycode
+				  input [7:0] keycode,
 				  input [9:0] DrawX, DrawY,
 				  input wall1,
 						  wall2,
@@ -34,7 +34,8 @@ module Pacman(input Clk, Reset, frame_clk,
 								  pos15,
 								  pos16,
 				output[9:0] pac_x,pac_y,
-				output logic is_Pac);
+				input [3:0] adj_walls,
+				output logic is_pac);
 				
 				
 logic frame_clk_delayed, frame_clk_rising_edge;
@@ -104,16 +105,12 @@ begin
                     pac_y_in = pac_y+1;
                 end
 		  end
-		  
-		  
-		  
-		  default : ; 
-	end 
-	else ;
+		   
+	 end 
 end 
 
 always_comb
-begin
+	begin
 	if(keycode == A)
 	begin
 		pos1  = ((pac_x - 1) >> 4) + (((pac_y + 1 ) >> 4) * 40);
@@ -131,7 +128,7 @@ begin
 		pos13 = ((pac_x - 1) >> 4) + (((pac_y + 13) >> 4) * 40);
 		pos14 = ((pac_x - 1) >> 4) + (((pac_y + 14) >> 4) * 40);
 	end
-	if(keycode == W)
+	else if(keycode == W)
 	begin
 		pos1  = ((pac_x + 1 ) >> 4) + (((pac_y - 1) >> 4) * 40);
 		pos2  = ((pac_x + 2 ) >> 4) + (((pac_y - 1) >> 4) * 40);
@@ -141,14 +138,14 @@ begin
 		pos6  = ((pac_x + 6 ) >> 4) + (((pac_y - 1) >> 4) * 40);
 		pos7  = ((pac_x + 7 ) >> 4) + (((pac_y - 1) >> 4) * 40);
 		pos8  = ((pac_x + 8 ) >> 4) + (((pac_y - 1) >> 4) * 40);
-		pos9 = ((pac_x + 9 ) >> 4) + (((pac_y - 1) >> 4) * 40);
+		pos9 =  ((pac_x + 9 ) >> 4) + (((pac_y - 1) >> 4) * 40);
 		pos10 = ((pac_x + 10) >> 4) + (((pac_y - 1) >> 4) * 40);
 		pos11 = ((pac_x + 11) >> 4) + (((pac_y - 1) >> 4) * 40);
 		pos12 = ((pac_x + 12) >> 4) + (((pac_y - 1) >> 4) * 40);
 		pos13 = ((pac_x + 13) >> 4) + (((pac_y - 1) >> 4) * 40);
 		pos14 = ((pac_x + 14) >> 4) + (((pac_y - 1) >> 4) * 40);
 	end
-	if(keycode== S)
+	else if(keycode== S)
 	begin
 		pos1  = ((pac_x + 1 ) >> 4) + (((pac_y + 16) >> 4) * 40);
 		pos2  = ((pac_x + 2 ) >> 4) + (((pac_y + 16) >> 4) * 40);
@@ -166,7 +163,7 @@ begin
 		pos14 = ((pac_x + 14) >> 4) + (((pac_y + 16) >> 4) * 40);
 	end
 	
-	if(keycode==D)
+	else if(keycode==D)
 	begin
 		pos1  = ((pac_x + 16) >> 4) + (((pac_y + 1 ) >> 4) * 40);
 		pos2  = ((pac_x + 16) >> 4) + (((pac_y + 2 ) >> 4) * 40);
@@ -183,8 +180,26 @@ begin
 		pos13 = ((pac_x + 16) >> 4) + (((pac_y + 13) >> 4) * 40);
 		pos14 = ((pac_x + 16) >> 4) + (((pac_y + 14) >> 4) * 40);
 	end
-
-
+	
+	else
+	begin
+		pos1 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos2 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos3 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos4 = (pac_x >> 4) + (((pac_y) >> 4) * 40); 
+		pos5 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos6 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos7 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos8 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos9 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos10 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos11 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos12 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos13 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+		pos14 = (pac_x >> 4) + (((pac_y) >> 4) * 40);
+	end
+							
+end
 		  
 assign pacman_sprite = {
 		16'b0001111001111000,

@@ -14,9 +14,14 @@
 //-------------------------------------------------------------------------
 
 // color_mapper: Decide which color to be output to VGA for each pixel.
-module  color_mapper ( input              is_ball,            // Whether current pixel belongs to ball 
-                                                              //   or background (computed in ball.sv)
-                       input        [9:0] DrawX, DrawY,       // Current pixel coordinates
+module  color_mapper ( input              is_pac,
+							  input 					is_wall,
+							  input					is_pellet,
+							  //input 					is_Ghost,
+                       input        [9:0] DrawX, DrawY,
+							  //input			[9:0] pac_X, pac_Y,
+							  input 			[9:0] Ghost_X, Ghost_Y,
+							  
                        output logic [7:0] VGA_R, VGA_G, VGA_B // VGA RGB output
                      );
     
@@ -27,23 +32,50 @@ module  color_mapper ( input              is_ball,            // Whether current
     assign VGA_G = Green;
     assign VGA_B = Blue;
     
-    // Assign color based on is_ball signal
+
     always_comb
     begin
-        if (is_ball == 1'b1) 
+		Red = 8'h00; 
+		Green = 8'h00;
+		Blue = 8'h00;
+        if (is_pac == 1'b1) 
         begin
-            // White ball
+            // Light yellow 2
             Red = 8'hff;
             Green = 8'hff;
-            Blue = 8'hff;
+            Blue = 8'h99;
         end
-        else 
-        begin
-            // Background with nice color gradient
-            Red = 8'h3f; 
-            Green = 8'h00;
-            Blue = 8'h7f - {1'b0, DrawX[9:3]};
-        end
-    end 
+		  
+		  if (is_pellet) 
+		  begin
+				// magenta
+				if (DrawX[3:0] > 5 && DrawX[3:0] < 10 && DrawY[3:0] > 5 && DrawY[3:0] < 10) begin
+					Red = 8'hff;
+					Green = 8'h00;
+					Blue = 8'hff;
+				end	
+			end
+		  
+//		  if (is_Ghost)
+//		  begin
+//				// Orangish shade 
+//				Red = 8'hea;
+//				Green = 8'h82;
+//				Blue = 8'h00;
+//		  end
+		  
+		  if (is_wall)
+		  begin
+				// Blue
+				Red = 8'h00; 
+				Green = 8'h00;
+				Blue = 8'hff;
+		  end
+				
+		  
+				
+				
+	end		
+
     
 endmodule

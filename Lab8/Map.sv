@@ -14,8 +14,11 @@ module Map (input Clk, input[10:0] pos, //positions from pacman sprite
 											  pos14,
 											  pos15,
 											  pos16,
+											  pos17,
 											  pacman_pos,
-							 output[3:0]  adj_walls,
+							 output [3:0]    adj_walls,
+							 output [3:0]    adj_walls_vga,
+							 //output [3:0]    adj_wallsg,
 											  
 							 output       is_wall, //control signal for color mapper 
 							 
@@ -38,20 +41,22 @@ module Map (input Clk, input[10:0] pos, //positions from pacman sprite
 
 logic[4:0] mapIndex[0:1199]; 
 initial begin
-		  $readmemb("sprites/maze_5bit.txt", mapIndex); 
+		  $readmemb("sprites/maze_5.txt", mapIndex); 
 end	
 
 always_ff @(posedge Clk)
         begin
+				adj_walls <= mapIndex[pacman_pos][4:1];
+            adj_walls_vga <= mapIndex[pos][4:1];
             is_wall  <= mapIndex[pos][0];   //get wall info from text file for each of pacmans 16 locations
-				is_wall2 <=  mapIndex[pos2 ][0];
-				is_wall3 <=  mapIndex[pos3 ][0];
-				is_wall4 <=  mapIndex[pos4 ][0];
-				is_wall5 <=  mapIndex[pos5 ][0];
-				is_wall6 <=  mapIndex[pos6 ][0];
-				is_wall7 <=  mapIndex[pos7 ][0];
-				is_wall8 <=  mapIndex[pos8 ][0];
-				is_wall9 <=  mapIndex[pos9 ][0];
+				is_wall2 <=  mapIndex[pos2][0];
+				is_wall3 <=  mapIndex[pos3][0];
+				is_wall4 <=  mapIndex[pos4][0];
+				is_wall5 <=  mapIndex[pos5][0];
+				is_wall6 <=  mapIndex[pos6][0];
+				is_wall7 <=  mapIndex[pos7][0];
+				is_wall8 <=  mapIndex[pos8][0];
+				is_wall9 <=  mapIndex[pos9][0];
 				is_wall10 <= mapIndex[pos10][0];
 				is_wall11 <= mapIndex[pos11][0];
 				is_wall12 <= mapIndex[pos12][0];
@@ -61,4 +66,4 @@ always_ff @(posedge Clk)
 				is_wall16 <= mapIndex[pos16][0];
 				is_wall17 <= mapIndex[pos17][0];
 		  end
-						 
+endmodule						 
